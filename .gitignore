@@ -1,0 +1,77 @@
+.gradle
+build/
+**/gradle/wrapper/gradle-wrapper.jar
+**/src/main/**/build/
+**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+**/src/main/**/out/
+**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Custom ###
+/nacos
+/middleware/**/*.jar
+
+
+# dependencies
+**/node_modules
+# roadhog-api-doc ignore
+**/src/utils/request-temp.js
+**/_roadhog-api-doc
+
+# production
+**/dist
+**/.vscode
+
+# misc
+**.DS_Store
+**/npm-debug.log*
+**/yarn-error.log
+
+/coverage
+**/.idea
+**/yarn.lock
+**/package-lock.json
+**/*bak
+**/.vscode
+
+# visual studio code
+.history
+*.log
+functions/*
+.temp/**
+
+# umi
+**/.umi
+**/.umi-production
+
+# screenshot
+**/screenshot
+**/.firebase
+**/.eslintcache
+
+build

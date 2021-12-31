@@ -1,0 +1,108 @@
+buildscript {
+
+    // gradle仓库的依赖源
+    repositories {
+        // 默认maven官方源
+        // mavenCentral()
+//        mavenLocal()
+        maven{ url 'https://maven.aliyun.com/repository/central' }
+        maven{ url 'https://maven.aliyun.com/repository/public' }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:${springBootManagementVersion}")
+    }
+
+}
+
+
+allprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    group = 'org.shanzhaozhen'
+    version = '0.0.1-SNAPSHOT'
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    // gradle仓库的依赖源
+    repositories {
+        // 默认maven官方源
+        // mavenCentral()
+//        mavenLocal()
+        maven{ url 'https://maven.aliyun.com/repository/central' }
+        maven{ url 'https://maven.aliyun.com/repository/public' }
+    }
+
+//    task copyTestResources(type: Copy) {
+//        from "${projectDir}/src/test/resources"
+//        into "${buildDir}/classes/test"
+//    }
+//    processTestResources.dependsOn copyTestResources
+//
+
+
+}
+
+
+subprojects {
+
+    // java编译的时候缺省状态下会因为中文字符而失败，所以这儿需要改为utf8
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    configurations {
+        developmentOnly
+        runtimeClasspath {
+            extendsFrom developmentOnly
+        }
+        compileOnly {
+            // lombok 配置
+            extendsFrom annotationProcessor
+        }
+    }
+
+    // gradle仓库的依赖源
+    repositories {
+        // 默认maven官方源
+        // mavenCentral()
+//        mavenLocal()
+        maven{ url 'https://maven.aliyun.com/repository/central' }
+        maven{ url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+
+    dependencies {
+//        implementation(
+////                'org.springframework.boot:spring-boot-starter-web',
+//        )
+
+        compileOnly 'org.projectlombok:lombok'
+
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+        annotationProcessor(
+                'org.projectlombok:lombok',
+                'org.springframework.boot:spring-boot-configuration-processor'
+        )
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+}
+

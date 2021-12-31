@@ -1,0 +1,30 @@
+description = 'resource'
+
+apply plugin: 'java-library'
+
+dependencies {
+
+//    api(
+//    )
+
+    implementation(
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-thymeleaf',
+            'org.springframework.boot:spring-boot-starter-actuator',
+
+            "org.springframework.boot:spring-boot-starter-security",
+            "org.springframework.security:spring-security-oauth2-authorization-server:${authorizationServerVersion}",
+//            "org.springframework.security:spring-security-oauth2-core:${springSecurityVersion}",
+//            "org.springframework.security:spring-security-oauth2-jose:${springSecurityVersion}",
+
+            'mysql:mysql-connector-java',
+            "com.alibaba:druid-spring-boot-starter:${druidVersion}",
+            "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}",
+            'org.springframework.boot:spring-boot-starter-data-redis'
+
+    )
+
+}
+
+
+
