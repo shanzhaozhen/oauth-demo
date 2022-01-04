@@ -1,4 +1,4 @@
-package com.example.authorize.config;
+package com.example.authorize.config.datasource;
 
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;

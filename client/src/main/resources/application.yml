@@ -16,29 +16,29 @@ spring:
     oauth2:
       client:
         registration:
-          messaging-client-oidc:
+          auth-oidc:
             provider: spring
-            client-id: messaging-client
-            client-secret: secret
+            client-id: auth
+            client-secret: 123456
             authorization-grant-type: authorization_code
             redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
             scope: openid
-            client-name: messaging-client-oidc
-          messaging-client-authorization-code:
+            client-name: auth-oidc
+          auth-authorization-code:
             provider: spring
-            client-id: messaging-client
-            client-secret: secret
+            client-id: auth
+            client-secret: 123456
             authorization-grant-type: authorization_code
             redirect-uri: "http://127.0.0.1:8080/authorized"
             scope: message.read,message.write
-            client-name: messaging-client-authorization-code
-          messaging-client-client-credentials:
+            client-name: auth-authorization-code
+          auth-client-credentials:
             provider: spring
-            client-id: messaging-client
-            client-secret: secret
+            client-id: auth
+            client-secret: 123456
             authorization-grant-type: client_credentials
             scope: message.read,message.write
-            client-name: messaging-client-client-credentials
+            client-name: auth-client-credentials
         provider:
           spring:
             issuer-uri: http://auth-server:9000
