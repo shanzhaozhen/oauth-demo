@@ -23,6 +23,12 @@ dependencies {
 //            "org.springframework.security:spring-security-oauth2-core:${springSecurityVersion}",
 //            "org.springframework.security:spring-security-oauth2-jose:${springSecurityVersion}",
 
+
+            'org.thymeleaf.extras:thymeleaf-extras-springsecurity5',
+            'org.webjars:webjars-locator-core',
+            'org.webjars:bootstrap:3.4.1',
+            'org.webjars:jquery:3.4.1',
+
     )
 
 }
