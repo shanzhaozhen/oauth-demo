@@ -31,9 +31,11 @@ Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authoriz
 ### 二、登陆过程
 
 1. 在登陆页面输入用户名和密码
-2. 进入关键过滤连 `UsernamePasswordAuthenticationFilter` ，（拦截`/login` 端点）
-3. 登陆通过后会进入 `AbstractAuthenticationProcessingFilter` 过滤连，开始鉴权
-4. 鉴权通过后最终进入 `SavedRequestAwareAuthenticationSuccessHandler` 的 `onAuthenticationSuccess` 方法
-5. 
+2. 进入关键过滤连 `AbstractAuthenticationProcessingFilter` ==> `UsernamePasswordAuthenticationFilter` ，（拦截`/login` 端点）
+3. 会进入关键的 `UserDetailsManager` 类从内存或数据源中（看你的实现方式，demo 默认使用了内存 `InMemoryUserDetailsManager` ）获取用户信息 `UserDetails`
+4. 
+5. 登陆通过后会进入 `AbstractAuthenticationProcessingFilter` 过滤连，开始鉴权
+6. 鉴权通过后最终进入 `SavedRequestAwareAuthenticationSuccessHandler` 的 `onAuthenticationSuccess` 方法
+7. 
 
 ***
