@@ -30,6 +30,8 @@ Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authoriz
 
 ### 二、登陆过程
 
+#### 授权服务器
+
 1. 在登陆页面输入用户名和密码
 2. 进入关键过滤连 `AbstractAuthenticationProcessingFilter` ==> `UsernamePasswordAuthenticationFilter` ，（拦截`/login` 端点）
    - 会进入关键的 `UserDetailsService` 具体的实现类中（demo 使用了 `InMemoryUserDetailsManager` ），获取用户信息 `UserDetails`
@@ -37,8 +39,14 @@ Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authoriz
 4. 重新进入授权服务器，经过 `OAuth2AuthorizationEndpointFilter` 过滤器
 5. 然后进入 `OAuth2AuthorizationCodeRequestAuthenticationProvider` 认证提供商的 `authenticateAuthorizationRequest` 方法进行鉴权
    - 这次鉴权通过后会调用 `generateAuthorizationCode()` 方法生成 code
-   - 构建 `OAuth2Authorization` 保存到
-6. 
-7. 进入 `OidcProviderConfigurationEndpointFilter` 
+   - 构建 `OAuth2Authorization` 保存到数据库，用来下次一访问授权服务器带上code做校验使用
+6. 最后会进入 `sendAuthorizationResponse` 方法中，携带 `code` 数据返回给客户端，（url 为 `http://127.0.0.1:8080/login/oauth2/code/auth-oidc?code=xxx` ）
+
+#### 客户端
+
+1. 接收到授权服务器传回来的 `code` ，将会被 `OAuth2LoginAuthenticationFilter` 过滤链拦截（拦截端点：`/login/oauth2/code/*` ）
+   - 进入 `attemptAuthentication` 方法会从 `request` 获取 `code` 的值
+   - 在 `attemptAuthentication` 方法中获取 `authorizationRequest` ，第一次取出来的值为null，这将会重新发送一次认证请求到授权服务器。过程将会跳转到 `/oauth2/authorization/auth-oidc?error` ,拦截错误后将会重新走一次上面提到的“认证页面获取过程”中客户端的第 4 点过程，一直回到这里
+   - 第二次进入 `attemptAuthentication` 方法，顺利通过 `authorizationRequest` 判断
 
 ***
