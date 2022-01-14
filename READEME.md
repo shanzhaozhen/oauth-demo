@@ -44,9 +44,10 @@ Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authoriz
 
 #### 客户端
 
-1. 接收到授权服务器传回来的 `code` ，将会被 `OAuth2LoginAuthenticationFilter` 过滤链拦截（拦截端点：`/login/oauth2/code/*` ）
-   - 进入 `attemptAuthentication` 方法会从 `request` 获取 `code` 的值
-   - 在 `attemptAuthentication` 方法中获取 `authorizationRequest` ，第一次取出来的值为null，这将会重新发送一次认证请求到授权服务器。过程将会跳转到 `/oauth2/authorization/auth-oidc?error` ,拦截错误后将会重新走一次上面提到的“认证页面获取过程”中客户端的第 4 点过程，一直回到这里
-   - 第二次进入 `attemptAuthentication` 方法，顺利通过 `authorizationRequest` 判断
+1. 接收到授权服务器传回来的 `code` ，将会被 `OAuth2LoginAuthenticationFilter` 过滤链拦截（拦截端点：`/login/oauth2/code/*` ），进入 `attemptAuthentication` 方法
+   - 从 `request` 获取 `code` 的值
+   - 获取 `authorizationRequest` ，第一次取出来的值为null，这将会重新发送一次认证请求到授权服务器。过程将会跳转到 `/oauth2/authorization/auth-oidc?error` ,拦截错误后将会重新走一次上面提到的“认证页面获取过程”中客户端的第 4 点过程，然后回到这里
+   - 第二次进入该方法，顺利通过 `authorizationRequest` 判断
+   - 进入 `OidcAuthorizationCodeAuthenticationProvider` 认证提供商的进行鉴权
 
 ***
