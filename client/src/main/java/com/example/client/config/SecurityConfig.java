@@ -24,8 +24,8 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.cors().disable()
-			.csrf().disable()
+//			.cors().disable()
+//			.csrf().disable()
 //			.sessionManagement()
 //			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //			.and()
@@ -33,7 +33,6 @@ public class SecurityConfig {
 				authorizeRequests.anyRequest().authenticated()
 			)
 			.oauth2Login(oauth2Login ->
-//				oauth2Login.loginPage("/oauth2/authorization/auth-oidc"))
 				oauth2Login.loginPage("/oauth2/authorization/auth-oidc"))
 			.oauth2Client(withDefaults());
 		return http.build();
