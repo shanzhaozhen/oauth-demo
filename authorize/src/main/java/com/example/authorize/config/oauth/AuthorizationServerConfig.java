@@ -88,8 +88,9 @@ public class AuthorizationServerConfig {
 //        RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
 //                // 客户端id 需要唯一
 //                .clientId("auth")
+//                .clientName("auth")
 //                // 客户端密码
-//                .clientSecret("{bcrypt}$2a$10$oZnmrnLLm9YjMtVLDCQ.wO2hhejtP4IJ4HTYFPFt27D71hJ2jLu5W")
+//                .clientSecret("{bcrypt}$2a$10$KOO.5LqjMqA/DcbvwiD9UOeA6dzHQGzUMjH8BKoil4GuxrmpfVpzK")
 //                // 可以基于 basic 的方式和授权服务器进行认证
 //                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 //                // 授权码
