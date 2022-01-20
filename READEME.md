@@ -4,6 +4,11 @@ Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authoriz
 
 ### Oauth2 客户端跳转过程
 
+### 零、客户端获取密钥
+
+1. 客户端启动会向授权服务器获取 `oidc` 授权服务器的端点信息，进入 `OidcProviderConfigurationEndpointFilter` 过滤链，端点为 `/.well-known/openid-configuration`
+
+
 ### 一、认证页面获取过程
 
 #### 客户端
