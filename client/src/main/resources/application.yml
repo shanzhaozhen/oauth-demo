@@ -5,8 +5,8 @@ logging:
   level:
     root: INFO
     org.springframework.web: INFO
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
 #    org.springframework.boot.autoconfigure: DEBUG
 
 spring:
@@ -21,7 +21,7 @@ spring:
             client-id: auth
             client-secret: 123456
             authorization-grant-type: authorization_code
-            redirect-uri: "http://auth-server:8080/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
             scope: openid
             client-name: auth-oidc
           auth-authorization-code:
@@ -29,7 +29,7 @@ spring:
             client-id: auth
             client-secret: 123456
             authorization-grant-type: authorization_code
-            redirect-uri: "http://auth-server:8080/authorized"
+            redirect-uri: "http://127.0.0.1:8080/authorized"
             scope: message.read,message.write
             client-name: auth-authorization-code
           auth-client-credentials:

@@ -46,8 +46,14 @@ Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authoriz
 
 1. 接收到授权服务器传回来的 `code` ，将会被 `OAuth2LoginAuthenticationFilter` 过滤链拦截（拦截端点：`/login/oauth2/code/*` ），进入 `attemptAuthentication` 方法
    - 从 `request` 获取 `code` 的值
-   - 获取 `authorizationRequest` ，第一次取出来的值为null，这将会重新发送一次认证请求到授权服务器。过程将会跳转到 `/oauth2/authorization/auth-oidc?error` ,拦截错误后将会重新走一次上面提到的“认证页面获取过程”中客户端的第 4 点过程，然后回到这里
-   - 第二次进入该方法，顺利通过 `authorizationRequest` 判断
-   - 进入 `OidcAuthorizationCodeAuthenticationProvider` 认证提供商的进行鉴权
+   - 获取 `authorizationRequest` ，不清楚为何如果客户端改成使用域名访问回一直取出来的值为null 
+2. 进入 `OidcAuthorizationCodeAuthenticationProvider` 的 `authenticate` 认证提供商的进行鉴权
+   - 调用封装好的 `getResponse` 方法，获取 `token (jwt)` ，携带 `code` 访问 `/oauth2/token` 端点，请求成功将会获得 `accessToken` 和 `refreshToken`
+   - 获得 token 后创进入 `createOidcToken` 方法构造 `OidcIdToken` ，构造过程将会解析 `token (jwt)` 的内容
 
 ***
+
+### 其他
+
+1. `state` 生成位置 `DefaultOAuth2AuthorizationRequestResolver` 中的 `resolve` 方法
+2. 客户端请求授权服务器的时候会在请求头中的 `Authorization` 携带客户端信息，使用base64加密，如 `Basic YXV0aDoxMjM0NTY=`

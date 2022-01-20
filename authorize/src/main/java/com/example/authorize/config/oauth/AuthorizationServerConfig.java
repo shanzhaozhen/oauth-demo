@@ -104,10 +104,15 @@ public class AuthorizationServerConfig {
 //                // 重定向url
 //                // 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名  不能使用 localhost
 //                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/auth-oidc")
+//                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/auth-authorization-code")
+//                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/auth-client-credentials")
 //                .redirectUri("http://127.0.0.1:8080/authorized")
 //                .redirectUri("http://auth-server:8080/login/oauth2/code/auth-oidc")
+//                .redirectUri("http://auth-server:8080/login/oauth2/code/auth-authorization-code")
+//                .redirectUri("http://auth-server:8080/login/oauth2/code/auth-client-credentials")
 //                .redirectUri("http://auth-server:8080/authorized")
 //                .redirectUri("http://www.baidu.com")
+//                .redirectUri("http2://www.baidu.com")
 //                // 客户端申请的作用域，也可以理解这个客户端申请访问用户的哪些信息，比如：获取用户信息，获取用户照片等
 //                // OIDC支持
 //                .scope(OidcScopes.OPENID)
