@@ -2,12 +2,14 @@
 
 Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authorization-server` ，没整明白，所以自己 debug 整理这个 Oauth2 认证的过程。
 
-### Oauth2 客户端跳转过程
+### Oauth2 客户端跳转过程（ `authorization_code` 的增强版 `OIDC` 认证方式 ）
 
 ### 零、客户端获取密钥
 
-1. 客户端启动会经过 `OAuth2ClientPropertiesRegistrationAdapter` 类的 `getClientRegistrations` 方法向授权服务器获取客户顿配置信息，访问授权服务器的 `/.well-known/openid-configuration`
-2. 授权服务器接收到请求后，进入 `OidcProviderConfigurationEndpointFilter` 过滤链，端点为 `/.well-known/openid-configuration` ，返回公钥信息给客户端
+1. 客户端启动会经过配置类 `OAuth2ClientRegistrationRepositoryConfiguration`
+2. 然后进入 `OAuth2ClientPropertiesRegistrationAdapter` 类的 `getClientRegistrations` 方法向授权服务器获取客户顿配置信息，访问授权服务器的 `/.well-known/openid-configuration`
+3. 授权服务器接收到请求后，进入 `OidcProviderConfigurationEndpointFilter` 过滤链，端点为 `/.well-known/openid-configuration` ，返回公钥信息给客户端
+4. 客户端获取到配置信息后，最终调用 `InMemoryClientRegistrationRepository` 保存到储存库中
 
 
 ### 一、认证页面获取过程
