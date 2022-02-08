@@ -2,7 +2,15 @@
 
 Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authorization-server` ，没整明白，所以自己 debug 整理这个 Oauth2 认证的过程。
 
-### Oauth2 客户端跳转过程
+### Oauth2 客户端跳转过程（ `authorization_code` 的增强版 `OIDC` 认证方式 ）
+
+### 零、客户端获取密钥
+
+1. 客户端启动会经过配置类 `OAuth2ClientRegistrationRepositoryConfiguration`
+2. 然后进入 `OAuth2ClientPropertiesRegistrationAdapter` 类的 `getClientRegistrations` 方法向授权服务器获取客户顿配置信息，访问授权服务器的 `/.well-known/openid-configuration`
+3. 授权服务器接收到请求后，进入 `OidcProviderConfigurationEndpointFilter` 过滤链，端点为 `/.well-known/openid-configuration` ，返回公钥信息给客户端
+4. 客户端获取到配置信息后，最终调用 `InMemoryClientRegistrationRepository` 保存到储存库中
+
 
 ### 一、认证页面获取过程
 
@@ -49,9 +57,30 @@ Oauth2 的文档太多了，而且 Spring 也出了个新产品 `spring-authoriz
    - 获取 `authorizationRequest` ，不清楚为何如果客户端改成使用域名访问回一直取出来的值为null 
 2. 进入 `OidcAuthorizationCodeAuthenticationProvider` 的 `authenticate` 认证提供商的进行鉴权
    - 调用封装好的 `getResponse` 方法，获取 `token (jwt)` ，携带 `code` 访问 `/oauth2/token` 端点，请求成功将会获得 `accessToken` 和 `refreshToken`
-   - 获得 token 后创进入 `createOidcToken` 方法构造 `OidcIdToken` ，构造过程将会解析 `token (jwt)` 的内容
+   
+
+#### 授权服务器
+
+1. 接收客户端传回来的 `code`，将会被 `OAuth2ClientAuthenticationFilter` 过滤链拦截（拦截端点：`/oauth2/token` ），对客户端信息进行鉴权
+   - 认证提供商为 `OAuth2ClientAuthenticationProvider` ，主要是校验储存在认证服务器中的客户端信息中的账号密码是否正确
+2. 接下来会进入 `OAuth2TokenEndpointFilter` 过滤器，先对请求进行分析 `grantTypes` 是什么类型的认证方式
+   - 判断为 `authorization_code` 认证方式将会进入 `OAuth2AuthorizationCodeAuthenticationProvider` 类中进行认证，
+     1. 通过 `authorization_code` 从数据库查找下发的 `authorization_code`
+     2. 获取到对应的认证信息后，会对 `authorization_code` 判断是否有效
+     3. 验证成功后将会生成对应的 token ，如果为 `authorization_code` 认证方式将会生成 `refreshToken`， `oidc` 的认证方式还会在其基础上增强 user 的用户信息
+     4. 一顿生成 `token` 的操作后将会把认证好的信息保存到数据库中
+     5. 最后使用 jwt 的形式返回给客户端 token
+
+#### 客户端
+
+1. 回到客户端的 `OidcAuthorizationCodeAuthenticationProvider` 
+   - 客户端顺利获取到 `token` 后，` 将会解析 `token (jwt)` 的内容，生成 `OidcUser`，最终保存到 `authenticationResult` 中
+2. 获取到用户信息 `authenticationResult` 后，回到 `OAuth2LoginAuthenticationFilter` 过滤链中， 对认证信息加工后将会保存到认证信息的储存库中，demo中使用默认的方式，将会进入 `InMemoryOAuth2AuthorizedClientService` 类中（**改造点**）
+3. 最后更新 session 后跳转到最先访问的页面
 
 ***
+
+**以上认证完成**
 
 ### 其他
 
